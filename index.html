@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Xperia Play — Archived Games Release 10</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-deep: #0a0a0f;
+  --bg-panel: #12121c;
+  --bg-card: #1a1a2e;
+  --bg-card-hover: #222240;
+  --bg-input: #16162a;
+  --se-blue: #2979ff;
+  --se-blue-dim: #1a4faa;
+  --se-green: #00e676;
+  --se-green-dim: #00a152;
+  --se-orange: #ff9100;
+  --se-red: #ff1744;
+  --se-purple: #aa00ff;
+  --se-cyan: #00e5ff;
+  --text-primary: #e8e8f0;
+  --text-secondary: #8888aa;
+  --text-dim: #555570;
+  --border-subtle: #2a2a44;
+  --border-active: #2979ff44;
+  --star-gold: #ffd740;
+  --radius: 6px;
+  --glow-blue: 0 0 20px #2979ff33;
+  --glow-green: 0 0 12px #00e67622;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { font-size: 14px; }
+
+body {
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  font-family: 'Exo 2', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* === SCANLINE OVERLAY === */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.03) 2px,
+    rgba(0,0,0,0.03) 4px
+  );
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* === HEADER === */
+.header {
+  background: linear-gradient(180deg, #14142a 0%, #0e0e1a 100%);
+  border-bottom: 1px solid var(--border-subtle);
+  padding: 0 24px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-inner {
+  max-width: 1600px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  height: 56px;
+  gap: 20px;
+}
+
+.logo-area {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.logo-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--se-blue), var(--se-purple));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  box-shadow: var(--glow-blue);
+}
+
+.logo-text {
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 1.3rem;
+  letter-spacing: 1px;
+  color: var(--text-primary);
+}
+
+.logo-text span {
+  color: var(--se-blue);
+}
+
+.logo-sub {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  letter-spacing: 2px;
+}
+
+/* === TABS === */
+.tabs-nav {
+  display: flex;
+  gap: 2px;
+  margin-left: auto;
+  height: 100%;
+  align-items: stretch;
+}
+
+.tab-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 600;
+  font-size: 0.85rem;
+  padding: 0 16px;
+  cursor: pointer;
+  position: relative;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  transition: color 0.2s;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+}
+
+.tab-btn:hover { color: var(--text-primary); }
+
+.tab-btn.active {
+  color: var(--se-blue);
+}
+
+.tab-btn.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 8px;
+  right: 8px;
+  height: 2px;
+  background: var(--se-blue);
+  border-radius: 2px 2px 0 0;
+  box-shadow: 0 0 8px var(--se-blue);
+}
+
+.tab-icon {
+  margin-right: 6px;
+  font-size: 1rem;
+}
+
+/* === MAIN CONTENT === */
+.main-content {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 20px 24px;
+}
+
+.tab-panel {
+  display: none;
+}
+
+.tab-panel.active {
+  display: block;
+  animation: fadeIn 0.25s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* === GAMES TAB - TOOLBAR === */
+.toolbar {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.search-box {
+  flex: 1;
+  min-width: 220px;
+  position: relative;
+}
+
+.search-box input {
+  width: 100%;
+  background: var(--bg-input);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius);
+  padding: 9px 14px 9px 36px;
+  color: var(--text-primary);
+  font-family: 'Exo 2', sans-serif;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.search-box input:focus {
+  border-color: var(--se-blue);
+  box-shadow: var(--glow-blue);
+}
+
+.search-box input::placeholder { color: var(--text-dim); }
+
+.search-box::before {
+  content: '⌕';
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-dim);
+  font-size: 1.1rem;
+}
+
+.filter-select {
+  background: var(--bg-input);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius);
+  padding: 9px 12px;
+  color: var(--text-primary);
+  font-family: 'Exo 2', sans-serif;
+  font-size: 0.85rem;
+  outline: none;
+  cursor: pointer;
+  min-width: 130px;
+  transition: border-color 0.2s;
+}
+
+.filter-select:focus { border-color: var(--se-blue); }
+
+.filter-select option { background: var(--bg-panel); }
+
+.stats-bar {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  margin-bottom: 16px;
+  padding: 10px 16px;
+  background: var(--bg-panel);
+  border-radius: var(--radius);
+  border: 1px solid var(--border-subtle);
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.stat-label {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.stat-value {
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: var(--se-blue);
+}
+
+.stat-value.green { color: var(--se-green); }
+.stat-value.orange { color: var(--se-orange); }
+.stat-value.red { color: var(--se-red); }
+
+/* === GAMES TABLE === */
+.games-table-wrap {
+  overflow-x: auto;
+  border-radius: var(--radius);
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-panel);
+}
+
+.games-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.games-table thead {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.games-table th {
+  background: linear-gradient(180deg, #1e1e36, #16162a);
+  color: var(--text-secondary);
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 10px 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--border-subtle);
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.15s;
+}
+
+.games-table th:hover { color: var(--se-blue); }
+
+.games-table th.sorted-asc::after { content: ' ▲'; color: var(--se-blue); font-size: 0.65rem; }
+.games-table th.sorted-desc::after { content: ' ▼'; color: var(--se-blue); font-size: 0.65rem; }
+
+.games-table td {
+  padding: 8px 12px;
+  border-bottom: 1px solid #1a1a30;
+  vertical-align: middle;
+  transition: background 0.1s;
+}
+
+.games-table tbody tr {
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.games-table tbody tr:hover {
+  background: var(--bg-card-hover);
+}
+
+.games-table tbody tr:nth-child(even) {
+  background: rgba(255,255,255,0.01);
+}
+
+.games-table tbody tr:nth-child(even):hover {
+  background: var(--bg-card-hover);
+}
+
+/* Name column styling */
+.game-name {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.95rem;
+}
+
+/* Stars */
+.stars-cell {
+  white-space: nowrap;
+  font-size: 0.8rem;
+}
+
+.star-filled { color: var(--star-gold); }
+.star-empty { color: var(--text-dim); opacity: 0.3; }
+.star-badge {
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+.star-badge.wifi { background: #1a237e; color: #448aff; }
+.star-badge.fix { background: #4a1400; color: #ff6e40; }
+.star-badge.malware { background: #4a0020; color: #ff1744; }
+.star-badge.remap { background: #1b0040; color: #b388ff; }
+.star-badge.app { background: #003320; color: #69f0ae; }
+.star-badge.emu { background: #002244; color: #40c4ff; }
+.star-badge.chinese { background: #443300; color: #ffd740; }
+.star-badge.novel { background: #2e003e; color: #ea80fc; }
+
+/* Status badges */
+.status-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 3px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.status-final { background: #003d20; color: var(--se-green); border: 1px solid #00e67633; }
+.status-working { background: #1a3300; color: #76ff03; border: 1px solid #76ff0333; }
+.status-wip { background: #332b00; color: var(--se-orange); border: 1px solid #ff910033; }
+.status-malware { background: #3d0011; color: var(--se-red); border: 1px solid #ff174433; }
+
+/* Type badges */
+.type-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 3px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.type-psm { background: #00277a; color: #5c9cff; }
+.type-psm-ps1 { background: #003366; color: #4dabf5; }
+.type-psm-psp { background: #002855; color: #448aff; }
+.type-apk { background: #1b3a00; color: #8bc34a; }
+.type-set { background: #3e2700; color: #ffab40; }
+.type-ouya { background: #330033; color: #ce93d8; }
+.type-gamestick { background: #003333; color: #4dd0e1; }
+.type-ots { background: #333300; color: #fff176; }
+.type-novel { background: #2e003e; color: #ea80fc; }
+
+/* Virus indicator */
+.virus-ok { color: var(--se-green); font-weight: 600; }
+.virus-warn { color: var(--se-red); font-weight: 600; }
+.virus-na { color: var(--text-dim); }
+
+/* D-pad / Touchpad indicators */
+.ctrl-yes { color: var(--se-green); }
+.ctrl-no { color: var(--se-red); }
+.ctrl-na { color: var(--text-dim); }
+
+/* === DETAIL PANEL (modal) === */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.7);
+  z-index: 200;
+  backdrop-filter: blur(4px);
+  animation: fadeIn 0.15s ease;
+}
+
+.modal-overlay.visible { display: flex; align-items: center; justify-content: center; }
+
+.modal-card {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-subtle);
+  border-radius: 10px;
+  width: 560px;
+  max-width: 95vw;
+  max-height: 85vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6), var(--glow-blue);
+}
+
+.modal-header {
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.modal-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.modal-close {
+  background: none;
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+
+.modal-close:hover { border-color: var(--se-red); color: var(--se-red); }
+
+.modal-body {
+  padding: 20px 24px;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.detail-field {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.detail-field.full { grid-column: 1 / -1; }
+
+.detail-label {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+.detail-value {
+  font-size: 0.95rem;
+  color: var(--text-primary);
+}
+
+.detail-notes {
+  margin-top: 16px;
+  padding: 12px 16px;
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  border-left: 3px solid var(--se-blue);
+}
+
+.detail-notes .detail-label { margin-bottom: 6px; }
+
+/* === INSTRUCTIONS TABS === */
+.instructions-panel {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.instructions-content {
+  padding: 28px 32px;
+  line-height: 1.75;
+  font-size: 0.9rem;
+}
+
+.instructions-content h2 {
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 1.3rem;
+  color: var(--se-blue);
+  margin: 28px 0 12px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.instructions-content h2:first-child { margin-top: 0; }
+
+.instructions-content h3 {
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: var(--se-cyan);
+  margin: 20px 0 8px;
+}
+
+.instructions-content p {
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+}
+
+.instructions-content .step {
+  display: flex;
+  gap: 12px;
+  margin: 6px 0;
+  padding: 6px 12px;
+  border-radius: var(--radius);
+  background: var(--bg-card);
+}
+
+.instructions-content .step-num {
+  font-family: 'Share Tech Mono', monospace;
+  color: var(--se-green);
+  font-weight: 700;
+  flex-shrink: 0;
+  min-width: 24px;
+}
+
+.instructions-content .step-text {
+  color: var(--text-secondary);
+}
+
+.instructions-content .warning {
+  background: #3d001133;
+  border: 1px solid #ff174422;
+  border-radius: var(--radius);
+  padding: 10px 14px;
+  margin: 10px 0;
+  color: var(--se-red);
+  font-size: 0.85rem;
+}
+
+.instructions-content .info-box {
+  background: #00277a22;
+  border: 1px solid #2979ff22;
+  border-radius: var(--radius);
+  padding: 10px 14px;
+  margin: 10px 0;
+  color: var(--se-blue);
+  font-size: 0.85rem;
+}
+
+.instructions-content .highlight {
+  color: var(--se-green);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.85rem;
+}
+
+.instructions-content a {
+  color: var(--se-cyan);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s;
+}
+
+.instructions-content a:hover { border-bottom-color: var(--se-cyan); }
+
+.instructions-content .console-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 6px;
+  margin: 12px 0;
+}
+
+.instructions-content .console-item {
+  padding: 6px 12px;
+  background: var(--bg-card);
+  border-radius: 4px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  border-left: 2px solid var(--se-blue);
+}
+
+.instructions-content .console-item.coming-soon {
+  border-left-color: var(--se-orange);
+  opacity: 0.6;
+}
+
+.instructions-content .section-badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 3px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 1px;
+  background: var(--se-blue);
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+/* === PAGINATION === */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+  padding: 12px 0;
+}
+
+.page-btn {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  padding: 6px 12px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 600;
+  font-size: 0.85rem;
+  transition: all 0.15s;
+}
+
+.page-btn:hover { border-color: var(--se-blue); color: var(--se-blue); }
+.page-btn.active { background: var(--se-blue); border-color: var(--se-blue); color: #fff; }
+.page-btn:disabled { opacity: 0.3; cursor: default; }
+
+.page-info {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  padding: 0 12px;
+}
+
+/* === LATEST UPDATES SPECIAL === */
+.update-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin: 16px 0;
+}
+
+.update-card h3 {
+  margin-top: 0 !important;
+}
+
+.update-stat {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: var(--bg-panel);
+  border-radius: 4px;
+  margin: 4px 4px 4px 0;
+  font-family: 'Share Tech Mono', monospace;
+}
+
+.update-stat .num {
+  font-size: 1.3rem;
+  font-weight: 700;
+  font-family: 'Rajdhani', sans-serif;
+  color: var(--se-green);
+}
+
+.update-stat .label {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 900px) {
+  .toolbar { flex-direction: column; }
+  .filter-select { width: 100%; }
+  .stats-bar { flex-wrap: wrap; gap: 12px; }
+  .tabs-nav { gap: 0; overflow-x: auto; }
+  .tab-btn { padding: 0 10px; font-size: 0.75rem; }
+  .detail-grid { grid-template-columns: 1fr; }
+  .header-inner { gap: 12px; }
+  .logo-sub { display: none; }
+}
+
+@media (max-width: 600px) {
+  .main-content { padding: 12px; }
+  .tab-icon { display: none; }
+  .games-table { font-size: 0.78rem; }
+  .games-table th, .games-table td { padding: 6px 8px; }
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: var(--bg-deep); }
+::-webkit-scrollbar-thumb { background: var(--border-subtle); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #3a3a5a; }
+
+/* Per-row-per-page selector */
+.per-page-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.per-page-wrap label {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.btn-reset {
+  background: transparent;
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  padding: 9px 14px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 600;
+  font-size: 0.85rem;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+
+.btn-reset:hover { border-color: var(--se-red); color: var(--se-red); }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-inner">
+    <div class="logo-area">
+      <div class="logo-icon">XP</div>
+      <div>
+        <div class="logo-text"><span>XPERIA</span> PLAY</div>
+        <div class="logo-sub">ARCHIVED GAMES · RELEASE 10</div>
+      </div>
+    </div>
+    <nav class="tabs-nav" id="tabsNav">
+      <button class="tab-btn active" data-tab="games"><span class="tab-icon">🎮</span>Games</button>
+      <button class="tab-btn" data-tab="instructions"><span class="tab-icon">📋</span>Instructions</button>
+      <button class="tab-btn" data-tab="ps"><span class="tab-icon">🕹️</span>PS Instructions</button>
+      <button class="tab-btn" data-tab="retroarch"><span class="tab-icon">🔧</span>RetroArch</button>
+      <button class="tab-btn" data-tab="root"><span class="tab-icon">🔓</span>Root Pack</button>
+      <button class="tab-btn" data-tab="updates"><span class="tab-icon">📡</span>Updates</button>
+    </nav>
+  </div>
+</header>
+
+<!-- MAIN -->
+<main class="main-content">
+
+  <!-- ====== GAMES TAB ====== -->
+  <div class="tab-panel active" id="panel-games">
+    <div class="stats-bar" id="statsBar"></div>
+    <div class="toolbar">
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Search games by name, publisher, genre…" autocomplete="off">
+      </div>
+      <select class="filter-select" id="filterType"><option value="">All Types</option></select>
+      <select class="filter-select" id="filterStatus"><option value="">All Statuses</option></select>
+      <select class="filter-select" id="filterGenre"><option value="">All Genres</option></select>
+      <select class="filter-select" id="filterStars"><option value="">All Ratings</option></select>
+      <button class="btn-reset" id="btnReset">✕ Reset</button>
+    </div>
+    <div class="games-table-wrap">
+      <table class="games-table">
+        <thead>
+          <tr id="tableHead"></tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+    </div>
+    <div class="pagination" id="pagination"></div>
+  </div>
+
+  <!-- ====== INSTRUCTIONS TAB ====== -->
+  <div class="tab-panel" id="panel-instructions">
+    <div class="instructions-panel">
+      <div class="instructions-content" id="instructionsContent"></div>
+    </div>
+  </div>
+
+  <!-- ====== PS INSTRUCTIONS TAB ====== -->
+  <div class="tab-panel" id="panel-ps">
+    <div class="instructions-panel">
+      <div class="instructions-content" id="psContent"></div>
+    </div>
+  </div>
+
+  <!-- ====== RETROARCH TAB ====== -->
+  <div class="tab-panel" id="panel-retroarch">
+    <div class="instructions-panel">
+      <div class="instructions-content" id="retroarchContent"></div>
+    </div>
+  </div>
+
+  <!-- ====== ROOT PACK TAB ====== -->
+  <div class="tab-panel" id="panel-root">
+    <div class="instructions-panel">
+      <div class="instructions-content" id="rootContent"></div>
+    </div>
+  </div>
+
+  <!-- ====== UPDATES TAB ====== -->
+  <div class="tab-panel" id="panel-updates">
+    <div class="instructions-panel">
+      <div class="instructions-content" id="updatesContent"></div>
+    </div>
+  </div>
+
+</main>
+
+<!-- DETAIL MODAL -->
+<div class="modal-overlay" id="modal">
+  <div class="modal-card">
+    <div class="modal-header">
+      <div class="modal-title" id="modalTitle"></div>
+      <button class="modal-close" id="modalClose">✕</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
