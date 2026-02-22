@@ -306,10 +306,14 @@
   function bindEvents() {
     var hamburger = $('#hamburger');
     var tabsNav = $('#tabsNav');
-    hamburger.addEventListener('click', function() {
+    function toggleMenu(e) {
+      e.preventDefault();
+      e.stopPropagation();
       hamburger.classList.toggle('open');
       tabsNav.classList.toggle('open');
-    });
+    }
+    hamburger.addEventListener('click', toggleMenu);
+    hamburger.addEventListener('touchend', toggleMenu);
 
     $$('.tab-btn').forEach(function(btn) {
       btn.addEventListener('click', function() {
@@ -361,6 +365,14 @@
     $('#modalClose').addEventListener('click', hideModal);
     $('#modal').addEventListener('click', function(e) { if (e.target === $('#modal')) hideModal(); });
     document.addEventListener('keydown', function(e) { if (e.key === 'Escape') hideModal(); });
+
+    // Close mobile menu on outside tap
+    document.addEventListener('click', function(e) {
+      if (tabsNav.classList.contains('open') && !tabsNav.contains(e.target) && !hamburger.contains(e.target)) {
+        hamburger.classList.remove('open');
+        tabsNav.classList.remove('open');
+      }
+    });
 
     $('#pagination').addEventListener('click', function(e) {
       var btn = e.target.closest('.page-btn');
