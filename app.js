@@ -317,7 +317,10 @@
 
     // Logo -> home (Games tab)
     $('#logoHome').addEventListener('click', function(e) {
-      e.preventDefault();
+      // Clean URL if it has a hash
+      if (window.location.hash) {
+        history.replaceState(null, '', window.location.pathname);
+      }
       $$('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
       $$('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
       var gamesBtn = document.querySelector('.tab-btn[data-tab="games"]');
