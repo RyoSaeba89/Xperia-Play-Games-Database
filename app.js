@@ -315,6 +315,19 @@
     hamburger.addEventListener('click', toggleMenu);
     hamburger.addEventListener('touchend', toggleMenu);
 
+    // Logo -> home (Games tab)
+    $('#logoHome').addEventListener('click', function(e) {
+      e.preventDefault();
+      $$('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+      $$('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
+      var gamesBtn = document.querySelector('.tab-btn[data-tab="games"]');
+      gamesBtn.classList.add('active');
+      $('#panel-games').classList.add('active');
+      hamburger.classList.remove('open');
+      tabsNav.classList.remove('open');
+      window.scrollTo(0, 0);
+    });
+
     $$('.tab-btn').forEach(function(btn) {
       btn.addEventListener('click', function() {
         $$('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
