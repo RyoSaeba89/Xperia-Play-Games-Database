@@ -46,6 +46,20 @@
     buildInstructions();
     applyFilters();
     bindEvents();
+    sizeTableWrap();
+    window.addEventListener('resize', sizeTableWrap);
+  }
+
+  // Dynamically size table-wrap so the games tab content never exceeds the viewport
+  function sizeTableWrap() {
+    var wrap = $('#gamesTableWrap');
+    if (!wrap) return;
+    var rect = wrap.getBoundingClientRect();
+    var pagination = $('#pagination');
+    var paginationH = pagination ? pagination.offsetHeight + 16 : 50;
+    // Available height = viewport bottom - table top - pagination - some padding
+    var available = window.innerHeight - rect.top - paginationH - 8;
+    wrap.style.maxHeight = Math.max(200, available) + 'px';
   }
 
   function buildFilters() {
@@ -354,6 +368,7 @@
         $('#panel-' + btn.dataset.tab).classList.add('active');
         hamburger.classList.remove('open');
         tabsNav.classList.remove('open');
+        if (btn.dataset.tab === 'games') setTimeout(sizeTableWrap, 50);
       });
     });
 
