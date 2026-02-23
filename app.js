@@ -13,10 +13,10 @@
     sortCol: 'name',
     sortDir: 'asc',
     search: '',
-    filterType: '',
-    filterStatus: '',
-    filterGenre: '',
-    filterStars: '',
+    filterType: [],
+    filterStatus: [],
+    filterGenre: [],
+    filterStars: [],
   };
 
   const COLUMNS = [
@@ -49,19 +49,34 @@
   }
 
   function buildFilters() {
-    populateSelect($('#filterType'), FILTER_TYPES);
-    populateSelect($('#filterStatus'), FILTER_STATUSES);
-    populateSelect($('#filterGenre'), FILTER_GENRES);
-    populateSelect($('#filterStars'), FILTER_STARS);
+    buildCheckboxFilter('fpType', FILTER_TYPES, 'filterType');
+    buildCheckboxFilter('fpStatus', FILTER_STATUSES, 'filterStatus');
+    buildCheckboxFilter('fpGenre', FILTER_GENRES, 'filterGenre');
+    buildCheckboxFilter('fpStars', FILTER_STARS, 'filterStars');
   }
 
-  function populateSelect(el, items) {
-    items.forEach(item => {
-      const opt = document.createElement('option');
-      opt.value = item;
-      opt.textContent = item;
-      el.appendChild(opt);
-    });
+  function buildCheckboxFilter(panelId, items, stateKey) {
+    var panel = $('#' + panelId);
+    panel.innerHTML = items.map(function(item) {
+      return '<label><input type="checkbox" data-filter="' + stateKey + '" value="' + esc(item) + '"> ' + esc(item) + '</label>';
+    }).join('');
+  }
+
+  function updateFilterBadge(stateKey, groupId) {
+    var group = $('#' + groupId);
+    var summary = group.querySelector('summary');
+    var badge = summary.querySelector('.filter-badge');
+    var count = state[stateKey].length;
+    if (count > 0) {
+      if (!badge) {
+        badge = document.createElement('span');
+        badge.className = 'filter-badge';
+        summary.insertBefore(badge, summary.lastChild);
+      }
+      badge.textContent = count;
+    } else if (badge) {
+      badge.remove();
+    }
   }
 
   function buildTableHead() {
@@ -81,8 +96,8 @@
   }
 
   function applyFilters() {
-    const s = state.search.toLowerCase();
-    state.filteredGames = GAMES_DATA.filter(g => {
+    var s = state.search.toLowerCase();
+    state.filteredGames = GAMES_DATA.filter(function(g) {
       if (s && !(
         g.name.toLowerCase().includes(s) ||
         g.publisher.toLowerCase().includes(s) ||
@@ -90,10 +105,10 @@
         g.filename.toLowerCase().includes(s) ||
         g.notes.toLowerCase().includes(s)
       )) return false;
-      if (state.filterType && g.type !== state.filterType) return false;
-      if (state.filterStatus && g.status !== state.filterStatus) return false;
-      if (state.filterGenre && g.genre !== state.filterGenre) return false;
-      if (state.filterStars && g.stars !== state.filterStars) return false;
+      if (state.filterType.length && state.filterType.indexOf(g.type) === -1) return false;
+      if (state.filterStatus.length && state.filterStatus.indexOf(g.status) === -1) return false;
+      if (state.filterGenre.length && state.filterGenre.indexOf(g.genre) === -1) return false;
+      if (state.filterStars.length && state.filterStars.indexOf(g.stars) === -1) return false;
       return true;
     });
     sortGames();
@@ -351,14 +366,38 @@
       }, 200);
     });
 
-    $('#filterType').addEventListener('change', function(e) { state.filterType = e.target.value; applyFilters(); });
-    $('#filterStatus').addEventListener('change', function(e) { state.filterStatus = e.target.value; applyFilters(); });
-    $('#filterGenre').addEventListener('change', function(e) { state.filterGenre = e.target.value; applyFilters(); });
-    $('#filterStars').addEventListener('change', function(e) { state.filterStars = e.target.value; applyFilters(); });
+    // Checkbox filters
+    var filterMap = {filterType:'fgType', filterStatus:'fgStatus', filterGenre:'fgGenre', filterStars:'fgStars'};
+    document.querySelectorAll('.filter-panel input[type="checkbox"]').forEach(function(cb) {
+      cb.addEventListener('change', function() {
+        var key = cb.dataset.filter;
+        var val = cb.value;
+        if (cb.checked) {
+          if (state[key].indexOf(val) === -1) state[key].push(val);
+        } else {
+          state[key] = state[key].filter(function(v) { return v !== val; });
+        }
+        updateFilterBadge(key, filterMap[key]);
+        applyFilters();
+      });
+    });
+
+    // Close other filter dropdowns when opening one
+    document.querySelectorAll('.filter-group').forEach(function(det) {
+      det.addEventListener('toggle', function() {
+        if (det.open) {
+          document.querySelectorAll('.filter-group').forEach(function(other) {
+            if (other !== det) other.removeAttribute('open');
+          });
+        }
+      });
+    });
 
     $('#btnReset').addEventListener('click', function() {
-      state.search = ''; state.filterType = ''; state.filterStatus = ''; state.filterGenre = ''; state.filterStars = '';
-      $('#searchInput').value = ''; $('#filterType').value = ''; $('#filterStatus').value = ''; $('#filterGenre').value = ''; $('#filterStars').value = '';
+      state.search = ''; state.filterType = []; state.filterStatus = []; state.filterGenre = []; state.filterStars = [];
+      $('#searchInput').value = '';
+      document.querySelectorAll('.filter-panel input[type="checkbox"]').forEach(function(cb) { cb.checked = false; });
+      Object.keys(filterMap).forEach(function(key) { updateFilterBadge(key, filterMap[key]); });
       applyFilters();
     });
 
