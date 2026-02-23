@@ -56,9 +56,19 @@ body::after {
   background: linear-gradient(180deg, #14142a 0%, #0e0e1a 100%);
   border-bottom: 1px solid var(--border-subtle);
   padding: 0 24px;
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 100;
+  height: 56px;
+}
+
+/* Offset body content below fixed header */
+.main-content {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 76px 24px 20px;
 }
 
 .header-inner {
@@ -129,8 +139,7 @@ body::after {
 }
 .tab-icon { margin-right: 6px; font-size: 1rem; }
 
-/* === MAIN === */
-.main-content { max-width: 1600px; margin: 0 auto; padding: 20px 24px; }
+/* === MAIN (defined above with header offset) === */
 .tab-panel { display: none; }
 .tab-panel.active { display: block; animation: fadeIn 0.25s ease; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
@@ -209,9 +218,11 @@ body::after {
 
 /* === TABLE === */
 .games-table-wrap {
-  overflow: auto; border-radius: var(--radius); border: 1px solid var(--border-subtle);
+  overflow-x: auto; overflow-y: auto;
+  border-radius: var(--radius); border: 1px solid var(--border-subtle);
   background: var(--bg-panel); position: relative; -webkit-overflow-scrolling: touch;
   max-height: calc(100vh - 200px);
+  overscroll-behavior: contain;
 }
 
 .games-table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 0.85rem; }
@@ -394,7 +405,7 @@ body::after {
 }
 
 @media (max-width: 600px) {
-  .main-content { padding: 12px; }
+  .main-content { padding: 68px 12px 12px; }
   .tab-icon { display: none; }
   .games-table { font-size: 0.78rem; }
   .games-table th, .games-table td { padding: 6px 8px; }
