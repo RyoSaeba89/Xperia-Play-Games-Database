@@ -442,12 +442,6 @@
     });
 
     var wrap = $('#gamesTableWrap');
-    var hint = $('#scrollHint');
-    if (wrap && hint) {
-      wrap.addEventListener('scroll', function handler() {
-        if (wrap.scrollLeft > 20) { hint.classList.add('faded'); wrap.removeEventListener('scroll', handler); }
-      });
-    }
   }
 
   function buildInstructions() {

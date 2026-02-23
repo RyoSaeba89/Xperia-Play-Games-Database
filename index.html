@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content">
 <title>Xperia Play — Archived Games Release 10</title>
 <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -32,14 +32,16 @@
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
-html { font-size: 14px; }
+html { font-size: 14px; overscroll-behavior: none; }
 
 body {
   background: var(--bg-deep);
   color: var(--text-primary);
   font-family: 'Exo 2', sans-serif;
   min-height: 100vh;
+  min-height: 100dvh;
   overflow-x: hidden;
+  overscroll-behavior: none;
 }
 
 body::after {
@@ -62,6 +64,11 @@ body::after {
   right: 0;
   z-index: 100;
   height: 56px;
+  /* Prevent any layout shift from mobile browser chrome */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 /* Offset body content below fixed header */
@@ -222,6 +229,7 @@ body::after {
   border-radius: var(--radius); border: 1px solid var(--border-subtle);
   background: var(--bg-panel); position: relative; -webkit-overflow-scrolling: touch;
   max-height: calc(100vh - 200px);
+  max-height: calc(100dvh - 200px);
   overscroll-behavior: contain;
 }
 
@@ -364,9 +372,8 @@ body::after {
 .update-stat .label { font-size: 0.75rem; color: var(--text-secondary); }
 
 /* === SCROLL HINT === */
-.scroll-hint { display: none; align-items: center; justify-content: center; gap: 6px; padding: 6px 12px; margin-bottom: 8px; font-family: 'Share Tech Mono', monospace; font-size: 0.7rem; color: var(--text-dim); letter-spacing: 1px; transition: opacity 0.3s; }
+.scroll-hint { display: none; align-items: center; justify-content: center; gap: 6px; padding: 6px 12px; margin-bottom: 8px; font-family: 'Share Tech Mono', monospace; font-size: 0.7rem; color: var(--text-dim); letter-spacing: 1px; }
 .scroll-hint .arrow { animation: bounceRight 1.2s ease infinite; display: inline-block; }
-.scroll-hint.faded { opacity: 0; pointer-events: none; }
 @keyframes bounceRight { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(5px); } }
 @media (max-width: 1200px) { .scroll-hint { display: flex; } }
 
