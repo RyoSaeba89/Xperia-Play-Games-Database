@@ -364,8 +364,9 @@ body::after {
 .update-stat .label { font-size: 0.75rem; color: var(--text-secondary); }
 
 /* === SCROLL HINT === */
-.scroll-hint { display: none; align-items: center; justify-content: center; gap: 6px; padding: 6px 12px; margin-bottom: 8px; font-family: 'Share Tech Mono', monospace; font-size: 0.7rem; color: var(--text-dim); letter-spacing: 1px; }
+.scroll-hint { display: none; align-items: center; justify-content: center; gap: 6px; padding: 6px 12px; margin-bottom: 8px; font-family: 'Share Tech Mono', monospace; font-size: 0.7rem; color: var(--text-dim); letter-spacing: 1px; transition: opacity 0.3s; }
 .scroll-hint .arrow { animation: bounceRight 1.2s ease infinite; display: inline-block; }
+.scroll-hint.faded { opacity: 0; pointer-events: none; }
 @keyframes bounceRight { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(5px); } }
 @media (max-width: 1200px) { .scroll-hint { display: flex; } }
 
