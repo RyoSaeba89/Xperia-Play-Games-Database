@@ -138,19 +138,7 @@ body::after {
 /* === TOOLBAR === */
 .tab-panel { display: none; }
 .tab-panel.active { display: block; animation: fadeIn 0.25s ease; }
-#panel-games.active {
-  display: flex;
-  flex-direction: column;
-  height: calc(100vh - 96px);
-  height: calc(100dvh - 96px);
-}
 @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-
-/* Games panel children layout */
-#panel-games .stats-bar { flex-shrink: 0; }
-#panel-games .toolbar { flex-shrink: 0; }
-#panel-games .scroll-hint { flex-shrink: 0; }
-#panel-games .pagination { flex-shrink: 0; }
 
 /* === TOOLBAR === */
 .toolbar { display: flex; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; align-items: center; }
@@ -230,8 +218,6 @@ body::after {
   border-radius: var(--radius); border: 1px solid var(--border-subtle);
   background: var(--bg-panel); position: relative; -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
-  flex: 1;
-  min-height: 0;
 }
 
 .games-table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 0.85rem; }
@@ -395,15 +381,23 @@ body::after {
   .tab-btn.active::after { display: none; }
   .tab-btn.active { background: rgba(41, 121, 255, 0.08); border-left: 3px solid var(--se-blue); }
 
-  /* Compact games panel */
+  /* Mobile-only: games panel fills viewport, table scrolls inside */
   .main-content { padding: 6px 10px; }
-  #panel-games.active { height: calc(100vh - 68px); height: calc(100dvh - 68px); }
+  #panel-games.active {
+    display: flex; flex-direction: column;
+    height: calc(100vh - 68px); height: calc(100dvh - 68px);
+  }
+  #panel-games .stats-bar { flex-shrink: 0; }
+  #panel-games .toolbar { flex-shrink: 0; }
+  #panel-games .scroll-hint { flex-shrink: 0; }
+  #panel-games .pagination { flex-shrink: 0; }
+  .games-table-wrap { flex: 1; min-height: 0; }
 
   .stats-bar { padding: 5px 10px; margin-bottom: 6px; gap: 8px; flex-wrap: wrap; }
   .stat-label { font-size: 0.6rem; }
   .stat-value { font-size: 0.95rem; }
 
-  /* Filters: 2x2 grid to save vertical space */
+  /* Filters: 2x2 grid */
   .toolbar { gap: 6px; margin-bottom: 6px; flex-wrap: wrap; }
   .toolbar .search-box { flex: 1 1 100%; min-width: 0; }
   .toolbar .search-box input { padding: 7px 10px 7px 30px; font-size: 0.82rem; }
