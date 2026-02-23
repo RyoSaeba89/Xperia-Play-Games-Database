@@ -141,10 +141,8 @@ body::after {
 #panel-games.active {
   display: flex;
   flex-direction: column;
-  /* Fill exactly: viewport minus header(56px) minus main-content padding(40px) */
   height: calc(100vh - 96px);
   height: calc(100dvh - 96px);
-  overflow: hidden;
 }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -398,28 +396,28 @@ body::after {
   .tab-btn.active { background: rgba(41, 121, 255, 0.08); border-left: 3px solid var(--se-blue); }
 
   /* Compact games panel */
-  .main-content { padding: 8px 10px; }
-  #panel-games.active { height: calc(100vh - 72px); height: calc(100dvh - 72px); }
+  .main-content { padding: 6px 10px; }
+  #panel-games.active { height: calc(100vh - 68px); height: calc(100dvh - 68px); }
 
-  .stats-bar { padding: 6px 10px; margin-bottom: 6px; gap: 10px; flex-wrap: wrap; }
-  .stat-label { font-size: 0.65rem; }
-  .stat-value { font-size: 1rem; }
+  .stats-bar { padding: 5px 10px; margin-bottom: 6px; gap: 8px; flex-wrap: wrap; }
+  .stat-label { font-size: 0.6rem; }
+  .stat-value { font-size: 0.95rem; }
 
-  /* Filters: horizontal scroll row instead of stacked column */
-  .toolbar { gap: 6px; margin-bottom: 6px; flex-direction: row; flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; align-items: center; }
-  .toolbar .search-box { min-width: 150px; flex: 0 0 150px; }
-  .toolbar .search-box input { padding: 7px 10px 7px 30px; font-size: 0.8rem; }
+  /* Filters: 2x2 grid to save vertical space */
+  .toolbar { gap: 6px; margin-bottom: 6px; flex-wrap: wrap; }
+  .toolbar .search-box { flex: 1 1 100%; min-width: 0; }
+  .toolbar .search-box input { padding: 7px 10px 7px 30px; font-size: 0.82rem; }
   .toolbar .search-box::before { left: 9px; font-size: 0.9rem; }
-  .filter-group { width: auto; flex-shrink: 0; }
-  .filter-group summary { width: auto; padding: 7px 10px; font-size: 0.78rem; min-width: auto; }
-  .filter-panel { min-width: 200px; }
-  .btn-reset { padding: 7px 10px; font-size: 0.78rem; }
+  .filter-group { width: calc(50% - 3px); flex-shrink: 0; }
+  .filter-group summary { width: 100%; padding: 6px 10px; font-size: 0.78rem; min-width: auto; }
+  .filter-panel { left: 0; min-width: 200px; }
+  .btn-reset { padding: 6px 10px; font-size: 0.78rem; flex: 1 1 100%; }
 
-  .scroll-hint { margin-bottom: 4px; padding: 3px 8px; font-size: 0.65rem; }
+  .scroll-hint { margin-bottom: 3px; padding: 2px 8px; font-size: 0.6rem; }
 
-  .pagination { margin-top: 4px; padding: 6px 0; gap: 4px; }
+  .pagination { margin-top: 3px; padding: 5px 0; gap: 4px; }
   .page-btn { padding: 4px 8px; font-size: 0.78rem; }
-  .page-info { padding: 0 6px; font-size: 0.65rem; }
+  .page-info { padding: 0 4px; font-size: 0.6rem; }
 
   .detail-grid { grid-template-columns: 1fr; }
   .header-inner { gap: 12px; }
