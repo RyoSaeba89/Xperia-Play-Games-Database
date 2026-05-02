@@ -1,0 +1,13 @@
+# Source spreadsheet — kept locally for regeneration via tools/regenerate_data.py
+*.xlsx
+
+# Python
+__pycache__/
+*.pyc
+
+# Editor / OS / agent state
+.vscode/
+.idea/
+.claude/
+.DS_Store
+Thumbs.db

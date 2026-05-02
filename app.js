@@ -1,5 +1,5 @@
 /* ============================================================
-   XPERIA PLAY — ARCHIVED GAMES RELEASE 10
+   XPERIA PLAY — ARCHIVED GAMES RELEASE 11
    Application Logic (app.js)
    ============================================================ */
 
@@ -28,7 +28,7 @@
     { key: 'publisher',label: 'Publisher',  width: '120px' },
     { key: 'filename', label: 'Filename',  width: '200px' },
     { key: 'version',  label: 'Ver.',      width: '60px'  },
-    { key: 'size_kb',  label: 'Size',      width: '70px'  },
+    { key: 'size_kb',  label: 'Year',      width: '70px'  },
     { key: 'apk',      label: 'APK',       width: '50px'  },
     { key: 'data',     label: 'Data',      width: '50px'  },
     { key: 'dpad',     label: 'D-Pad',     width: '55px'  },
@@ -159,7 +159,7 @@
       '<td style="color:var(--text-secondary);">' + esc(g.publisher) + '</td>' +
       '<td style="color:var(--text-dim);font-family:\'Share Tech Mono\',monospace;font-size:0.75rem;">' + esc(g.filename) + '</td>' +
       '<td style="font-family:\'Share Tech Mono\',monospace;color:var(--text-dim);">' + esc(g.version) + '</td>' +
-      '<td style="font-family:\'Share Tech Mono\',monospace;color:var(--text-dim);">' + formatSize(g.size_kb) + '</td>' +
+      '<td style="font-family:\'Share Tech Mono\',monospace;color:var(--text-dim);">' + formatYear(g.size_kb) + '</td>' +
       '<td>' + renderYesNo(g.apk) + '</td>' +
       '<td>' + renderYesNo(g.data) + '</td>' +
       '<td>' + renderYesNo(g.dpad) + '</td>' +
@@ -219,13 +219,9 @@
     return '<span class="virus-na">—</span>';
   }
 
-  function formatSize(val) {
+  function formatYear(val) {
     if (!val || val === '#N/A') return '—';
-    const num = parseInt(val);
-    if (isNaN(num)) return esc(val);
-    if (num >= 1000000) return (num / 1000000).toFixed(1) + ' GB';
-    if (num >= 1000) return (num / 1000).toFixed(1) + ' MB';
-    return num + ' KB';
+    return esc(val);
   }
 
   function esc(str) {
@@ -294,7 +290,7 @@
       '<div class="detail-field"><span class="detail-label">Publisher</span><span class="detail-value">' + (esc(game.publisher) || '—') + '</span></div>' +
       '<div class="detail-field"><span class="detail-label">Version</span><span class="detail-value" style="font-family:\'Share Tech Mono\',monospace;">' + (esc(game.version) || '—') + '</span></div>' +
       '<div class="detail-field full"><span class="detail-label">Filename</span><span class="detail-value" style="font-family:\'Share Tech Mono\',monospace;font-size:0.85rem;color:var(--text-secondary);">' + esc(game.filename) + '</span></div>' +
-      '<div class="detail-field"><span class="detail-label">Size</span><span class="detail-value" style="font-family:\'Share Tech Mono\',monospace;">' + formatSize(game.size_kb) + '</span></div>' +
+      '<div class="detail-field"><span class="detail-label">Year</span><span class="detail-value" style="font-family:\'Share Tech Mono\',monospace;">' + formatYear(game.size_kb) + '</span></div>' +
       '<div class="detail-field"><span class="detail-label">VirusTotal</span><span class="detail-value">' + renderVirus(game.virus_total) + '</span></div>' +
       '<div class="detail-field"><span class="detail-label">APK</span><span class="detail-value">' + renderYesNo(game.apk) + '</span></div>' +
       '<div class="detail-field"><span class="detail-label">Data</span><span class="detail-value">' + renderYesNo(game.data) + '</span></div>' +
@@ -303,11 +299,16 @@
       '<div class="detail-field"><span class="detail-label">Game Buttons Mapped</span><span class="detail-value" style="font-family:\'Share Tech Mono\',monospace;">' + (esc(game.game_buttons_mapped) || '—') + '</span></div>' +
       '</div>' +
       (game.notes ? '<div class="detail-notes"><span class="detail-label">Notes</span><div class="detail-value" style="margin-top:4px;color:var(--text-secondary);line-height:1.6;">' + esc(game.notes) + '</div></div>' : '');
-    $('#modal').classList.add('visible');
+    var modal = $('#modal');
+    modal.classList.add('visible');
+    modal.setAttribute('aria-hidden', 'false');
+    $('#modalClose').focus();
   }
 
   function hideModal() {
-    $('#modal').classList.remove('visible');
+    var modal = $('#modal');
+    modal.classList.remove('visible');
+    modal.setAttribute('aria-hidden', 'true');
   }
 
   function gkpBadge(val) {
@@ -324,8 +325,15 @@
     function toggleMenu(e) {
       e.preventDefault();
       e.stopPropagation();
-      hamburger.classList.toggle('open');
-      tabsNav.classList.toggle('open');
+      var willOpen = !hamburger.classList.contains('open');
+      hamburger.classList.toggle('open', willOpen);
+      tabsNav.classList.toggle('open', willOpen);
+      hamburger.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+    }
+    function closeMenu() {
+      hamburger.classList.remove('open');
+      tabsNav.classList.remove('open');
+      hamburger.setAttribute('aria-expanded', 'false');
     }
     hamburger.addEventListener('click', toggleMenu);
     hamburger.addEventListener('touchend', toggleMenu);
@@ -341,8 +349,7 @@
       var gamesBtn = document.querySelector('.tab-btn[data-tab="games"]');
       gamesBtn.classList.add('active');
       $('#panel-games').classList.add('active');
-      hamburger.classList.remove('open');
-      tabsNav.classList.remove('open');
+      closeMenu();
       window.scrollTo(0, 0);
     });
 
@@ -352,8 +359,7 @@
         btn.classList.add('active');
         $$('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
         $('#panel-' + btn.dataset.tab).classList.add('active');
-        hamburger.classList.remove('open');
-        tabsNav.classList.remove('open');
+        closeMenu();
       });
     });
 
@@ -421,12 +427,14 @@
     $('#modal').addEventListener('click', function(e) { if (e.target === $('#modal')) hideModal(); });
     document.addEventListener('keydown', function(e) { if (e.key === 'Escape') hideModal(); });
 
-    // Close mobile menu on outside tap
+    // Close mobile menu on outside tap or Escape
     document.addEventListener('click', function(e) {
       if (tabsNav.classList.contains('open') && !tabsNav.contains(e.target) && !hamburger.contains(e.target)) {
-        hamburger.classList.remove('open');
-        tabsNav.classList.remove('open');
+        closeMenu();
       }
+    });
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && tabsNav.classList.contains('open')) closeMenu();
     });
 
     $('#pagination').addEventListener('click', function(e) {
@@ -446,7 +454,7 @@
 
   function buildInstructions() {
     $('#instructionsContent').innerHTML =
-      '<h2>General Installation Instructions — Release 10</h2>' +
+      '<h2>General Installation Instructions — Release 11</h2>' +
 
       '<h3>FINAL / APK <span class="highlight">.apk files</span></h3>' +
       '<div class="step"><span class="step-num">1</span><span class="step-text">Copy <span class="highlight">.apk</span> file to SDCARD <span class="highlight">/APK/</span> directory.</span></div>' +
@@ -721,8 +729,8 @@
 
     // Latest Updates
     $('#updatesContent').innerHTML =
-      '<h2>Latest Updates — Release 10</h2>' +
-      '<p>The archiving torrent has now been updated to Release 10!</p>' +
+      '<h2>Latest Updates — Release 11</h2>' +
+      '<p>The archiving torrent has now been updated to Release 11!</p>' +
       '<div class="update-card"><h3>Android Games</h3><p style="color:var(--text-dim);margin-bottom:12px;">Some updates, some new, most WIP - HELP</p><div>' +
         '<div class="update-stat"><span class="num">20</span><span class="label">SETS (5 NEW + 15 updated)</span></div>' +
         '<div class="update-stat"><span class="num">97</span><span class="label">APKS (50 NEW + 47 updated)</span></div></div></div>' +
