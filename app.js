@@ -20,21 +20,20 @@
   };
 
   const COLUMNS = [
-    { key: 'name',     label: 'Name',      width: '200px', sticky: true },
-    { key: 'stars',    label: 'Rating',    width: '80px'  },
-    { key: 'type',     label: 'Type',      width: '90px'  },
-    { key: 'status',   label: 'Status',    width: '140px' },
-    { key: 'genre',    label: 'Genre',     width: '110px' },
-    { key: 'publisher',label: 'Publisher',  width: '120px' },
-    { key: 'filename', label: 'Filename',  width: '200px' },
-    { key: 'version',  label: 'Ver.',      width: '60px'  },
-    { key: 'size_kb',  label: 'Year',      width: '70px'  },
-    { key: 'apk',      label: 'APK',       width: '50px'  },
-    { key: 'data',     label: 'Data',      width: '50px'  },
-    { key: 'dpad',     label: 'D-Pad',     width: '55px'  },
-    { key: 'touchpad', label: 'Touch',     width: '55px'  },
-    { key: 'game_buttons_mapped', label: 'Buttons', width: '60px' },
-    { key: 'virus_total', label: 'Virus',  width: '55px'  },
+    { key: 'name',     label: 'Name',      width: '220px', sticky: true },
+    { key: 'stars',    label: 'Rating',    width: '90px'  },
+    { key: 'type',     label: 'Type',      width: '95px'  },
+    { key: 'status',   label: 'Status',    width: '150px' },
+    { key: 'genre',    label: 'Genre',     width: '120px' },
+    { key: 'publisher',label: 'Publisher', width: '130px' },
+    { key: 'filename', label: 'Filename',  width: '210px' },
+    { key: 'version',  label: 'Ver.',      width: '70px'  },
+    { key: 'apk',      label: 'APK',       width: '55px'  },
+    { key: 'data',     label: 'Data',      width: '55px'  },
+    { key: 'dpad',     label: 'D-Pad',     width: '60px'  },
+    { key: 'touchpad', label: 'Touch',     width: '60px'  },
+    { key: 'game_buttons_mapped', label: 'Buttons', width: '70px' },
+    { key: 'virus_total', label: 'Virus',  width: '65px'  },
   ];
 
   const $ = (s) => document.querySelector(s);
@@ -124,7 +123,7 @@
     state.filteredGames.sort((a, b) => {
       let va = a[col] || '';
       let vb = b[col] || '';
-      if (col === 'size_kb' || col === 'game_buttons_mapped' || col === 'virus_total') {
+      if (col === 'game_buttons_mapped' || col === 'virus_total') {
         va = parseFloat(va) || 0;
         vb = parseFloat(vb) || 0;
         return (va - vb) * dir;
@@ -159,7 +158,6 @@
       '<td style="color:var(--text-secondary);">' + esc(g.publisher) + '</td>' +
       '<td style="color:var(--text-dim);font-family:\'Share Tech Mono\',monospace;font-size:0.75rem;">' + esc(g.filename) + '</td>' +
       '<td style="font-family:\'Share Tech Mono\',monospace;color:var(--text-dim);">' + esc(g.version) + '</td>' +
-      '<td style="font-family:\'Share Tech Mono\',monospace;color:var(--text-dim);">' + formatYear(g.size_kb) + '</td>' +
       '<td>' + renderYesNo(g.apk) + '</td>' +
       '<td>' + renderYesNo(g.data) + '</td>' +
       '<td>' + renderYesNo(g.dpad) + '</td>' +
@@ -217,11 +215,6 @@
     if (num === 0) return '<span class="virus-ok">Clean</span>';
     if (!isNaN(num) && num > 0) return '<span class="virus-warn">⚠ ' + num + '</span>';
     return '<span class="virus-na">—</span>';
-  }
-
-  function formatYear(val) {
-    if (!val || val === '#N/A') return '—';
-    return esc(val);
   }
 
   function esc(str) {
@@ -290,7 +283,6 @@
       '<div class="detail-field"><span class="detail-label">Publisher</span><span class="detail-value">' + (esc(game.publisher) || '—') + '</span></div>' +
       '<div class="detail-field"><span class="detail-label">Version</span><span class="detail-value" style="font-family:\'Share Tech Mono\',monospace;">' + (esc(game.version) || '—') + '</span></div>' +
       '<div class="detail-field full"><span class="detail-label">Filename</span><span class="detail-value" style="font-family:\'Share Tech Mono\',monospace;font-size:0.85rem;color:var(--text-secondary);">' + esc(game.filename) + '</span></div>' +
-      '<div class="detail-field"><span class="detail-label">Year</span><span class="detail-value" style="font-family:\'Share Tech Mono\',monospace;">' + formatYear(game.size_kb) + '</span></div>' +
       '<div class="detail-field"><span class="detail-label">VirusTotal</span><span class="detail-value">' + renderVirus(game.virus_total) + '</span></div>' +
       '<div class="detail-field"><span class="detail-label">APK</span><span class="detail-value">' + renderYesNo(game.apk) + '</span></div>' +
       '<div class="detail-field"><span class="detail-label">Data</span><span class="detail-value">' + renderYesNo(game.data) + '</span></div>' +

@@ -273,17 +273,20 @@ body::after {
 .stat-value.orange { color: var(--se-orange); }
 .stat-value.red { color: var(--se-red); }
 
-/* === TABLE === */
+/* === TABLE ===
+   Page handles vertical scroll. Wrap only scrolls horizontally on overflow.
+   Sticky thead is intentionally NOT used: position:sticky inside an
+   overflow-x:auto wrap can't follow page-level scroll (CSS cascade rule).
+   Pagination becomes sticky at viewport bottom instead — see further below. */
 .games-table-wrap {
-  overflow: auto;
+  overflow-x: auto;
   border-radius: var(--radius); border: 1px solid var(--border-subtle);
   background: var(--bg-panel); position: relative; -webkit-overflow-scrolling: touch;
-  overscroll-behavior: contain;
+  overscroll-behavior-x: contain;
 }
 
 .games-table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 0.85rem; }
 .games-table thead th {
-  position: sticky; top: 0; z-index: 10;
   background: linear-gradient(180deg, #1e1e36, #16162a); color: var(--text-secondary);
   font-family: 'Rajdhani', sans-serif; font-weight: 600; font-size: 0.75rem;
   text-transform: uppercase; letter-spacing: 1px; padding: 10px 12px; text-align: left;
@@ -294,11 +297,11 @@ body::after {
 .games-table thead th.sorted-asc::after { content: ' ▲'; color: var(--se-blue); font-size: 0.65rem; }
 .games-table thead th.sorted-desc::after { content: ' ▼'; color: var(--se-blue); font-size: 0.65rem; }
 
-/* Sticky name column */
+/* Sticky name column — pinned during horizontal scroll only */
 .games-table th.sticky-col, .games-table td.sticky-col {
-  position: sticky; left: 0; z-index: 6;
+  position: sticky; left: 0; z-index: 2;
 }
-.games-table th.sticky-col { background: linear-gradient(180deg, #1e1e36, #16162a); z-index: 12; }
+.games-table th.sticky-col { background: linear-gradient(180deg, #1e1e36, #16162a); z-index: 3; }
 .games-table td.sticky-col { background: var(--bg-panel); }
 .games-table tbody tr:nth-child(even) td.sticky-col { background: #131320; }
 .games-table tbody tr:hover td.sticky-col { background: var(--bg-card-hover); }
@@ -404,9 +407,22 @@ body::after {
 .gkp-set { font-family: 'Share Tech Mono', monospace; color: var(--se-cyan); font-size: 0.8rem; }
 .gkp-table td:last-child { font-size: 0.82rem; color: var(--text-dim); line-height: 1.5; min-width: 220px; }
 
-/* === PAGINATION === */
-.pagination { display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 16px; padding: 12px 0; flex-wrap: wrap; }
-.page-btn { background: var(--bg-card); border: 1px solid var(--border-subtle); color: var(--text-secondary); padding: 10px 14px; border-radius: var(--radius); cursor: pointer; font-family: 'Rajdhani', sans-serif; font-weight: 600; font-size: 0.9rem; min-width: var(--tap-min); min-height: var(--tap-min); transition: all 0.15s; -webkit-tap-highlight-color: transparent; }
+/* === PAGINATION ===
+   Sticky to viewport bottom on every breakpoint so it never disappears.
+   Background is opaque + a soft top fade so rows behind it stay readable
+   while scrolling. */
+.pagination {
+  display: flex; justify-content: center; align-items: center; gap: 8px;
+  margin-top: 16px; padding: 12px 12px calc(12px + env(safe-area-inset-bottom));
+  flex-wrap: nowrap; overflow-x: auto; overscroll-behavior-x: contain;
+  position: sticky; bottom: 0; z-index: 50;
+  background: linear-gradient(180deg, transparent 0%, var(--bg-deep) 30%, var(--bg-deep) 100%);
+  border-top: 1px solid var(--border-subtle);
+  -webkit-overflow-scrolling: touch;
+}
+/* Hide the pagination inner scrollbar — content rarely overflows on desktop */
+.pagination::-webkit-scrollbar { height: 0; }
+.page-btn { background: var(--bg-card); border: 1px solid var(--border-subtle); color: var(--text-secondary); padding: 10px 14px; border-radius: var(--radius); cursor: pointer; font-family: 'Rajdhani', sans-serif; font-weight: 600; font-size: 0.9rem; min-width: var(--tap-min); min-height: var(--tap-min); flex-shrink: 0; transition: all 0.15s; -webkit-tap-highlight-color: transparent; }
 .page-btn:hover { border-color: var(--se-blue); color: var(--se-blue); }
 .page-btn.active { background: var(--se-blue); border-color: var(--se-blue); color: #fff; }
 .page-btn:disabled { opacity: 0.3; cursor: default; }
@@ -442,17 +458,8 @@ body::after {
   .tab-btn.active::after { display: none; }
   .tab-btn.active { background: rgba(41, 121, 255, 0.08); border-left: 3px solid var(--se-blue); }
 
-  /* Mobile-only: games panel fills viewport, table scrolls inside */
+  /* Mobile-only: page-level vertical scroll, table only scrolls horizontally */
   .main-content { padding: 6px 10px; }
-  #panel-games.active {
-    display: flex; flex-direction: column;
-    height: calc(100vh - 68px); height: calc(100dvh - 68px);
-  }
-  #panel-games .stats-bar { flex-shrink: 0; }
-  #panel-games .toolbar { flex-shrink: 0; }
-  #panel-games .scroll-hint { flex-shrink: 0; }
-  #panel-games .pagination { flex-shrink: 0; }
-  .games-table-wrap { flex: 1; min-height: 0; }
 
   .stats-bar { padding: 5px 10px; margin-bottom: 6px; gap: 8px; flex-wrap: wrap; }
   .stat-label { font-size: 0.6rem; }
