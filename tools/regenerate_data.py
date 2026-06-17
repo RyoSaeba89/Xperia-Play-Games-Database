@@ -5,7 +5,7 @@ Regenerate data.js and xperia_games.db from the Xperia Play Archived Games xlsx.
 Usage:
     python tools/regenerate_data.py [path/to/release.xlsx]
 
-Defaults to "Xperia Play Archived Games Release 11.xlsx" at repo root.
+Defaults to "Xperia Play Archived Games Release 12.xlsx" at repo root.
 Writes both data.js (front-end) and xperia_games.db (SQLite) at repo root,
 preserving the historical 16-field schema.
 The xlsx file itself is gitignored — keep it locally to re-run this script.
@@ -100,7 +100,7 @@ def main():
     if len(sys.argv) > 1:
         xlsx_path = Path(sys.argv[1]).resolve()
     else:
-        xlsx_path = repo / 'Xperia Play Archived Games Release 11.xlsx'
+        xlsx_path = repo / 'Xperia Play Archived Games Release 12.xlsx'
     out_path = repo / 'data.js'
 
     if not xlsx_path.exists():

@@ -446,7 +446,7 @@
 
   function buildInstructions() {
     $('#instructionsContent').innerHTML =
-      '<h2>General Installation Instructions — Release 11</h2>' +
+      '<h2>General Installation Instructions — Release 12</h2>' +
 
       '<h3>FINAL / APK <span class="highlight">.apk files</span></h3>' +
       '<div class="step"><span class="step-num">1</span><span class="step-text">Copy <span class="highlight">.apk</span> file to SDCARD <span class="highlight">/APK/</span> directory.</span></div>' +
@@ -721,17 +721,73 @@
 
     // Latest Updates
     $('#updatesContent').innerHTML =
-      '<h2>Latest Updates — Release 11</h2>' +
-      '<p>The archiving torrent has now been updated to Release 11!</p>' +
-      '<div class="update-card"><h3>Android Games</h3><p style="color:var(--text-dim);margin-bottom:12px;">Some updates, some new, most WIP - HELP</p><div>' +
-        '<div class="update-stat"><span class="num">20</span><span class="label">SETS (5 NEW + 15 updated)</span></div>' +
-        '<div class="update-stat"><span class="num">97</span><span class="label">APKS (50 NEW + 47 updated)</span></div></div></div>' +
-      '<div class="update-card"><h3>Visual Novels</h3><div>' +
-        '<div class="update-stat"><span class="num">13</span><span class="label">Visual Novels added</span></div></div></div>' +
-      '<div class="update-card"><h3>RetroArch Kit Update</h3><div>' +
-        '<div class="update-stat"><span class="num">23</span><span class="label">Console Kits now complete</span></div></div>' +
-        '<p style="margin-top:12px;">2 new kits added:</p>' +
-        '<div class="console-list" style="margin-top:8px;"><div class="console-item">NEC 1987 - PC Engine - TurboGrafx 16</div><div class="console-item">NEC 1989 - PC Engine - SuperGrafx</div></div></div>' +
+      '<h2>Latest Updates — Release 12</h2>' +
+      '<p>The archiving torrent has now been updated to Release 12!</p>' +
+      '<div class="update-card"><h3>At a Glance</h3><div>' +
+        '<div class="update-stat"><span class="num">13</span><span class="label">Games modified</span></div>' +
+        '<div class="update-stat"><span class="num">37</span><span class="label">New additions</span></div>' +
+        '<div class="update-stat"><span class="num">2</span><span class="label">Visual Novels</span></div></div></div>' +
+      '<div class="update-card"><h3>Modified</h3>' +
+        '<div class="console-list" style="margin-top:8px;">' +
+          '<div class="console-item">Dungeon Hunter 3 — REMOVED MALWARE</div>' +
+          '<div class="console-item">Dungeon Hunter 4 — REMOVED MALWARE</div>' +
+          '<div class="console-item">Gangstar Rio — FIXED LANGUAGE</div>' +
+          '<div class="console-item">Gangstar Vegas — REMOVED MALWARE, FIXED LANGUAGE &amp; FIXED CONTROLS</div>' +
+          '<div class="console-item">Let\'s Golf 3 — REMOVED MALWARE &amp; FIXED LANGUAGE</div>' +
+          '<div class="console-item">N.O.V.A. 3 — REMOVED MALWARE &amp; UPDATED TO NEWER VERSION</div>' +
+          '<div class="console-item">Real Football 2012 — REMOVED MALWARE &amp; FIXED LANGUAGE</div>' +
+          '<div class="console-item">Real Football 2013 — REMOVED MALWARE &amp; FIXED LANGUAGE</div>' +
+          '<div class="console-item">RE-VOLT Classic — REMOVED LITE</div>' +
+          '<div class="console-item">Shark Dash — REMOVED MALWARE</div>' +
+          '<div class="console-item">Six Guns — UPDATED TO NEWER VERSION</div>' +
+          '<div class="console-item">Terraria — FIXED BOOT ERROR</div>' +
+          '<div class="console-item">Wild Blood — REMOVED MALWARE</div>' +
+        '</div></div>' +
+      '<div class="update-card"><h3>New Additions</h3>' +
+        '<div class="console-list" style="margin-top:8px;">' +
+          '<div class="console-item">Biz Builder Delux</div>' +
+          '<div class="console-item">Dig!</div>' +
+          '<div class="console-item">Game Dev Story</div>' +
+          '<div class="console-item">High Sea Saga</div>' +
+          '<div class="console-item">Macabre</div>' +
+          '<div class="console-item">Magazine Mogul</div>' +
+          '<div class="console-item">Mathy Bird</div>' +
+          '<div class="console-item">Mini Quests</div>' +
+          '<div class="console-item">Motrya</div>' +
+          '<div class="console-item">OneTapHero</div>' +
+          '<div class="console-item">Pinata Rampage!</div>' +
+          '<div class="console-item">Pocket Harvest</div>' +
+          '<div class="console-item">Pocket League Story 2</div>' +
+          '<div class="console-item">Pocket Stables</div>' +
+          '<div class="console-item">Ramble Planet</div>' +
+          '<div class="console-item">Renju of my youth</div>' +
+          '<div class="console-item">Replica Island</div>' +
+          '<div class="console-item">Robot Unicorn Attack 2</div>' +
+          '<div class="console-item">Ruin</div>' +
+          '<div class="console-item">Shmantis</div>' +
+          '<div class="console-item">Sine Mora</div>' +
+          '<div class="console-item">Slayin</div>' +
+          '<div class="console-item">Soul Shepherds</div>' +
+          '<div class="console-item">Space Repair Inc.</div>' +
+          '<div class="console-item">Space Vermin</div>' +
+          '<div class="console-item">Squid Sudoku</div>' +
+          '<div class="console-item">star breaker</div>' +
+          '<div class="console-item">SushiFish</div>' +
+          '<div class="console-item">Tank Recon 3D</div>' +
+          '<div class="console-item">The Ramen Sensei</div>' +
+          '<div class="console-item">Thug Racer</div>' +
+          '<div class="console-item">Triangles Adventure</div>' +
+          '<div class="console-item">Troll Over</div>' +
+          '<div class="console-item">Ultionus A Tale of Petty Revenge</div>' +
+          '<div class="console-item">Void Pyramid</div>' +
+          '<div class="console-item">Walthros</div>' +
+          '<div class="console-item">Zombie Hearts Chicken</div>' +
+        '</div></div>' +
+      '<div class="update-card"><h3>Visual Novels</h3>' +
+        '<div class="console-list" style="margin-top:8px;">' +
+          '<div class="console-item">The Life Of A Pacifist Is Often Fraught With Conflict</div>' +
+          '<div class="console-item">Therapy Bundle</div>' +
+        '</div></div>' +
       '<p style="margin-top:24px;color:var(--text-dim);">— RoadkillMike &amp; Ryo</p>';
   }
 
